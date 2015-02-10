@@ -54,6 +54,13 @@
     [SFLogger setLogLevel:SFLogLevelInfo];
 #endif
     
+    // Simulate MDM settings.
+    NSDictionary *managedDict = @{ @"ClearClipboardOnBackground": @YES,
+                                   @"RequireCertAuth": @YES };
+    [[NSUserDefaults standardUserDefaults] setObject:managedDict
+                                              forKey:@"com.apple.configuration.managed"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     SFHybridViewConfig *appConfig = [SFHybridViewConfig fromDefaultConfigFile];
     [SalesforceSDKManager sharedManager].appConfig = appConfig;
     __weak AppDelegate *weakSelf = self;

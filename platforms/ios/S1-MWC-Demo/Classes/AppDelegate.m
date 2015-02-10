@@ -55,10 +55,6 @@
 
     self = [super init];
     
-    NSDictionary *mdmDict = @{ @"RequireCertAuth": @YES };
-    [[NSUserDefaults standardUserDefaults] setObject:mdmDict forKey:@"com.apple.configuration.managed"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     return self;
 }
 
