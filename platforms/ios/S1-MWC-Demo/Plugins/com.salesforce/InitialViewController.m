@@ -37,26 +37,37 @@ static NSString * const kDefaultHybridAppLabel = @"Loading...";
     return self;
 }
 
-- (void)loadView
-{
-    [super loadView];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    if (!self.appLabel.text) {
-        self.appLabel.text = kDefaultHybridAppLabel;
-        self.appLabel.font = [UIFont systemFontOfSize:25.0];
-    }
-    [self.view addSubview:self.appLabel];
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSString *launchImageName = [self splashImageNameForOrientation:UIInterfaceOrientationPortrait];
+    UIImage *launchImage = [UIImage imageNamed:launchImageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:launchImage];
+    [self.view addSubview:imageView];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    CGSize appLabelTextSize = [self.appLabel.text sizeWithAttributes:@{ NSFontAttributeName:self.appLabel.font }];
-    CGFloat w = appLabelTextSize.width;
-    CGFloat h = appLabelTextSize.height;
-    CGFloat x = CGRectGetMidX(self.view.frame) - (w / 2.0);
-    CGFloat y = CGRectGetMidY(self.view.frame) - (h / 2.0);
-    self.appLabel.frame = CGRectMake(x, y, w, h);
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (NSString *)splashImageNameForOrientation:(UIInterfaceOrientation)orientation {
+    CGSize viewSize = self.view.bounds.size;
+    NSString* viewOrientation = @"Portrait";
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        viewSize = CGSizeMake(viewSize.height, viewSize.width);
+        viewOrientation = @"Landscape";
+    }
+    
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    for (NSDictionary* dict in imagesDict) {
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        if (CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]])
+            return dict[@"UILaunchImageName"];
+    }
+    return nil;
 }
 
 @end
