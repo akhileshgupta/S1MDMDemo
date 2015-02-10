@@ -46,7 +46,7 @@
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>SFDCOAuthLoginHost</key>
-	<string>sdk-dsa.my.salesforce.com</string>
+	<string>login.salesforce.com</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
